@@ -1,0 +1,2 @@
+# archiveScript
+iOS自动打包上传到Fir平台和Appstore的脚本文件
