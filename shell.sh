@@ -50,8 +50,10 @@ fi
 echo '///-----------'
 echo '/// 正在清理工程'
 echo '///-----------'
-./exportXcbuild.sh \
+xcodebuild \
 clean -configuration ${development_mode} -quiet  || exit
+
+
 echo '///--------'
 echo '/// 清理完成'
 echo '///--------'
@@ -60,7 +62,7 @@ echo ''
 echo '///-----------'
 echo '/// 正在编译工程:'${development_mode}
 echo '///-----------'
-./exportXcbuild.sh \
+xcodebuild \
 archive -workspace ${project_path}/${project_name}.xcworkspace \
 -scheme ${scheme_name} \
 -configuration ${development_mode} \
@@ -74,7 +76,7 @@ echo ''
 echo '///----------'
 echo '/// 开始ipa打包'
 echo '///----------'
-./exportXcbuild.sh -exportArchive -archivePath ${build_path}/${project_name}.xcarchive \
+xcodebuild -exportArchive -archivePath ${build_path}/${project_name}.xcarchive \
 -configuration ${development_mode} \
 -exportPath ${exportIpaPath} \
 -exportOptionsPlist ${exportOptionsPlistPath} \
@@ -98,6 +100,7 @@ echo ''
 echo '///-------------'
 echo '/// 开始发布ipa包 '
 echo '///-------------'
+
 if [ $number == 1 ];then
 
 #验证并上传到App Store
@@ -113,6 +116,7 @@ fir login -T XXX
 fir publish $exportIpaPath/$scheme_name.ipa
 
 fi
+
 exit 0
 
 
