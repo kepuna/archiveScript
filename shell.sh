@@ -51,7 +51,10 @@ echo '///-----------'
 echo '/// 正在清理工程'
 echo '///-----------'
 xcodebuild \
-clean -configuration ${development_mode} -quiet  || exit
+clean \
+-workspace ${project_path}/${project_name}.xcworkspace \
+-scheme ${scheme_name} \
+-configuration ${development_mode} -quiet  || exit
 
 
 echo '///--------'
