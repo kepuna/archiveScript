@@ -14,6 +14,9 @@ project_name=XXX
 #scheme名 将XXX替换成自己的sheme名
 scheme_name=XXX
 
+#ipa名 将XXX替换成自己的ipa名 最后生成的XXX.ipa
+ipa_name=XXX
+
 #打包模式 Debug/Release
 development_mode=Debug
 
@@ -54,7 +57,9 @@ xcodebuild \
 clean \
 -workspace ${project_path}/${project_name}.xcworkspace \
 -scheme ${scheme_name} \
--configuration ${development_mode} -quiet  || exit
+-configuration ${development_mode} \
+-destination 'generic/platform=iOS' \
+-quiet  || exit
 
 
 echo '///--------'
@@ -69,7 +74,9 @@ xcodebuild \
 archive -workspace ${project_path}/${project_name}.xcworkspace \
 -scheme ${scheme_name} \
 -configuration ${development_mode} \
--archivePath ${build_path}/${project_name}.xcarchive  -quiet  || exit
+-archivePath ${build_path}/${project_name}.xcarchive \
+-destination 'generic/platform=iOS' \
+-quiet  || exit
 
 echo '///--------'
 echo '/// 编译完成'
@@ -83,6 +90,7 @@ xcodebuild -exportArchive -archivePath ${build_path}/${project_name}.xcarchive \
 -configuration ${development_mode} \
 -exportPath ${exportIpaPath} \
 -exportOptionsPlist ${exportOptionsPlistPath} \
+-destination 'generic/platform=iOS'\
 -quiet || exit
 
 if [ -e $exportIpaPath/$scheme_name.ipa ]; then
@@ -113,10 +121,15 @@ altoolPath="/Applications/Xcode.app/Contents/Applications/Application Loader.app
 "$altoolPath" --upload-app -f ${exportIpaPath}/${scheme_name}.ipa -u  XXX -p XXX -t ios --output-format xml
 else
 
-#上传到Fir
-# 将XXX替换成自己的Fir平台的token
-fir login -T XXX
-fir publish $exportIpaPath/$scheme_name.ipa
+#上传到蒲公英
+#将的XXX替换成自己的蒲公英账号下的appKey
+appKey="XXX"
+
+IPA_PATH=$exportIpaPath/$ipa_name.ipa
+
+echo '/// 正在上传:'${IPA_PATH}
+ 
+curl https://www.pgyer.com/apiv2/app/upload -F "file=@${IPA_PATH}" -F "_api_key=${appKey}" --header "enctype: multipart/form-data"
 
 fi
 
