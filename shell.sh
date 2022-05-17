@@ -93,7 +93,7 @@ xcodebuild -exportArchive -archivePath ${build_path}/${project_name}.xcarchive \
 -destination 'generic/platform=iOS'\
 -quiet || exit
 
-if [ -e $exportIpaPath/$scheme_name.ipa ]; then
+if [ -e $exportIpaPath/$ipa_name.ipa ]; then
 echo '///----------'
 echo '/// ipa包已导出'
 echo '///----------'
